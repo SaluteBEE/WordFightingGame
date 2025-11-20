@@ -7,14 +7,10 @@ public class WaveGernerator : MonoBehaviour
     [SerializeField] GameObject WavePrefab;
     [SerializeField] Transform WaveParent;
     [SerializeField] Transform Character;
+    [SerializeField] GridMap gridMap;
 
-    public void GenerateWave(string WaveText,float damage,int currentRow)
+    public void GenerateWave(string WaveText,float moveInterval,float damage,int currentRow)
     {
-        GameObject wave = Instantiate(WavePrefab, transform.position, Quaternion.identity);
-        wave.transform.parent = WaveParent;
-        wave.transform.position = Character.position;
-        wave.GetComponent<Wave>().WaveText = WaveText;
-        wave.GetComponent<Wave>().damage = damage;
-        wave.GetComponent<Wave>().currentRow = currentRow;
+        gridMap.LaunchWordWave(WaveText, moveInterval, damage, currentRow);
     }
 }

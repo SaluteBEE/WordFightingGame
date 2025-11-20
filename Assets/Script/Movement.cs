@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] Vector2 upDownVector;
+    [SerializeField] float upDownDistance;
     [SerializeField] float leftRightDistance;
-    [SerializeField] int maxRow = 3;
+    [SerializeField] int maxRow = 5;
     [SerializeField] int minRow = 1; 
-    [SerializeField] public int currentRow = 2;  
+    [SerializeField] public int currentRow = 3;  
 
     public void MoveLeft()
     {
@@ -25,31 +25,16 @@ public class Movement : MonoBehaviour
         if(currentRow > minRow)
         {
             currentRow--;
-            transform.DOMoveX(transform.position.x + upDownVector.x, 0.3f);
-            transform.DOMoveY(transform.position.y + upDownVector.y, 0.3f);
+            transform.DOMoveZ(transform.position.z + upDownDistance, 0.3f);
         }
-        
     }
     public void MoveDown()
     {
         if(currentRow < maxRow)
         {
             currentRow++;
-            transform.DOMoveX(transform.position.x - upDownVector.x, 0.3f);
-            transform.DOMoveY(transform.position.y - upDownVector.y, 0.3f);
+            transform.DOMoveZ(transform.position.z - upDownDistance, 0.3f);
         }
-    }
-    IEnumerator MoveUpDownCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-    }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-
-        Vector3 start = transform.position;
-        Vector3 end = start + new Vector3(upDownVector.x, upDownVector.y, 0f);
-        Gizmos.DrawLine(start, end);
     }
 }
     

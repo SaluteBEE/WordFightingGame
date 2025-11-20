@@ -9,6 +9,7 @@ public class GameCore : MonoBehaviour
     [SerializeField] Text Targettext;
     [SerializeField] Text Inputtext;
     [SerializeField] Health health;
+
     
     int wordLength;
     int CurrentWordLength = 0;
@@ -37,7 +38,7 @@ public class GameCore : MonoBehaviour
             {
                 if(Inputtext.text == Targettext.text)
                 {
-                    waveGenerator.GenerateWave(Targettext.text, 10, movement.currentRow);
+                    waveGenerator.GenerateWave(Targettext.text, 0.5f, 10, movement.currentRow);
                 }
                 else if(Inputtext.text == "UP")
                 {
@@ -62,7 +63,7 @@ public class GameCore : MonoBehaviour
                     {
                         wrongWord += "*";
                     }
-                    waveGenerator.GenerateWave(wrongWord, 2, movement.currentRow);
+                    waveGenerator.GenerateWave(wrongWord, 0.5f, 2, movement.currentRow);
                 }
                 CurrentWordLength = 0;
                 Inputtext.text = "";
