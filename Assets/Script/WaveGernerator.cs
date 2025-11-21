@@ -13,4 +13,8 @@ public class WaveGernerator : MonoBehaviour
     {
         gridMap.LaunchWordWave(WaveText, moveInterval, damage, currentRow);
     }
+    public void GenerateEnemyWave(string WaveText,float moveInterval,float damage,int currentRow)
+    {
+        gridMap.LaunchEnemyWave(WaveText, moveInterval, damage, currentRow);
+    }
 }

@@ -6,15 +6,18 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] int health = 100;
-    [SerializeField] Text healthText;
+    [SerializeField] int PlayerHealth = 100;
+    [SerializeField] int EnemyHealth = 100;
+    [SerializeField] Text PlayerHealthText;
+    [SerializeField] Text EnemyHealthText;
     Collider2D boxCollider;
 
     [SerializeField] int currentRow = 2;
     // Start is called before the first frame update
     void Start()
     {
-        healthText.text = health.ToString();
+        PlayerHealthText.text = PlayerHealth.ToString();
+        EnemyHealthText.text = EnemyHealth.ToString();
         boxCollider = GetComponent<BoxCollider2D>();
     }
 
@@ -23,18 +26,16 @@ public class Health : MonoBehaviour
     {
         
     }
-    public void loseHealth(int amount)
+    public void losePlayerHealth(int amount)
     {
-        health -= amount;
-        healthText.text = health.ToString();
+        PlayerHealth -= amount;
+        PlayerHealthText.text = PlayerHealth.ToString();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void loseEnemyHealth(int amount)
     {
-        if(collision.gameObject.tag == "Wave" && collision.gameObject.GetComponent<Wave>().currentRow == currentRow)
-        {
-            loseHealth((int)collision.gameObject.GetComponent<Wave>().damage);
-            Destroy(collision.gameObject);
-        }
+        EnemyHealth -= amount;
+        EnemyHealthText.text = EnemyHealth.ToString();
     }
+    
     
 }
