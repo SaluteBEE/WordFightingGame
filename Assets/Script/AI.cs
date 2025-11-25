@@ -21,7 +21,7 @@ public class AI : MonoBehaviour
         while (true)
         {
             int randomRow = Random.Range(1, 5);
-            waveGenerator.GenerateEnemyWave("DAMN", 0.5f, 10, randomRow);
+            //waveGenerator.GenerateEnemyWave("DAMN", 0.5f, 10, randomRow);
             yield return new WaitForSeconds(5f);
         }
     }

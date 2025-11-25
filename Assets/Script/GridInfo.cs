@@ -17,4 +17,8 @@ public class GridInfo:MonoBehaviour
         Cha.text = character.ToString();
         wordWave = null;
     }
+    void Update()
+    {
+        Cha.text = character.ToString();
+    }
 }

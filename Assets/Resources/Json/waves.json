@@ -1,0 +1,21 @@
+{
+    "waves": [
+      {
+        "id": "BOOM",
+        "cost": 0
+      },
+      {
+        "id": "BURN",
+        "cost": 5
+      },
+      {
+        "id": "FREEZE",
+        "cost": 5
+      },
+      {
+        "id": "ARROW",
+        "cost": 5
+      }
+    ]
+  }
+  

@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class WaveGernerator : MonoBehaviour
 {
-    [SerializeField] GameObject WavePrefab;
-    [SerializeField] Transform WaveParent;
     [SerializeField] Transform Character;
     [SerializeField] GridMap gridMap;
+    [SerializeField] Point point;
 
-    public void GenerateWave(string WaveText,float moveInterval,float damage,int currentRow)
+    public void GenerateWave(string waveID, bool isEnemy)
     {
-        gridMap.LaunchWordWave(WaveText, moveInterval, damage, currentRow);
-    }
-    public void GenerateEnemyWave(string WaveText,float moveInterval,float damage,int currentRow)
-    {
-        gridMap.LaunchEnemyWave(WaveText, moveInterval, damage, currentRow);
+        
+        WaveData data = WaveDatabase.Instance.GetWave(waveID);
+        if(data == null)
+        {
+            gridMap.LaunchWordWave("***", 1, 1);
+            return;
+        }
+        if(!point.ConsumePoint(data.cost))
+        {
+            Debug.Log("Not enough points");
+            return;
+        }
+
+        
+        gridMap.LaunchWordWave(data.id, 1, 1);
     }
 }

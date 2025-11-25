@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameCore : MonoBehaviour
 {
     [SerializeField] string word;
-    [SerializeField] Text Targettext;
     [SerializeField] Text Inputtext;
     [SerializeField] Health health;
 
@@ -18,56 +17,64 @@ public class GameCore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Targettext.text = "";
         Inputtext.text = "";
-        Targettext.text = word;
         wordLength = word.Length;
     }
 
     // Update is called once per frame
     void Update()
     {
-        string input = Input.inputString;
-        if(!string.IsNullOrEmpty(input))
+
+        if(Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if(input != " ")
+            movement.MoveUp();
+        }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            movement.MoveDown();
+        }
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            movement.MoveLeft();
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            movement.MoveRight();
+        }
+
+
+
+
+        string input = Input.inputString;
+        if(input != " ")
             {
-                Inputtext.text = Inputtext.text+=input;
+                Inputtext.text = Inputtext.text += input;
             }
             else 
             {
-                if(Inputtext.text == Targettext.text)
-                {
-                    waveGenerator.GenerateWave(Targettext.text, 0.5f, 10, movement.currentRow);
-                }
-                else if(Inputtext.text == "UP")
-                {
-                    movement.MoveUp();
-                }
-                else if(Inputtext.text == "DOWN")
-                {
-                    movement.MoveDown();
-                }
-                else if(Inputtext.text == "LEFT")
-                {
-                    movement.MoveLeft();
-                }
-                else if(Inputtext.text == "RIGHT")
-                {
-                    movement.MoveRight();
-                }
-                else
-                {
-                    string wrongWord = "";
-                    for(int i = 0; i < Inputtext.text.Length; i++)
-                    {
-                        wrongWord += "*";
-                    }
-                    waveGenerator.GenerateWave(wrongWord, 0.5f, 2, movement.currentRow);
-                }
+                // if(Inputtext.text == "UP")
+                // {
+                //     movement.MoveUp();
+                // }
+                // else if(Inputtext.text == "DOWN")
+                // {
+                //     movement.MoveDown();
+                // }
+                // else if(Inputtext.text == "LEFT")
+                // {
+                //     movement.MoveLeft();
+                // }
+                // else if(Inputtext.text == "RIGHT")
+                // {
+                //     movement.MoveRight();
+                // }
+                // else 
+                // {
+                    waveGenerator.GenerateWave(Inputtext.text,false);
+                //}
                 CurrentWordLength = 0;
                 Inputtext.text = "";
             }
         }
     }
-}
+
