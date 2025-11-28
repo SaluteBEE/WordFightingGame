@@ -12,18 +12,25 @@ public class WaveGernerator : MonoBehaviour
     {
         
         WaveData data = WaveDatabase.Instance.GetWave(waveID);
-        if(data == null)
+        if(isEnemy == false)
         {
-            gridMap.LaunchWordWave("***", 1, 1);
-            return;
+            if(data == null)
+            {
+                gridMap.LaunchWordWave("***", 1, 1);
+                return;
+            }
+            if(!point.ConsumePoint(data.cost))
+            {
+                Debug.Log("Not enough points");
+                return;
+            }
+            gridMap.LaunchWordWave(data.id, 1, 1);
         }
-        if(!point.ConsumePoint(data.cost))
+        else
         {
-            Debug.Log("Not enough points");
-            return;
+            int randomRow = Random.Range(1, 5);
+            gridMap.LaunchEnemyWave(data.id, 1, 1,randomRow);
         }
-
         
-        gridMap.LaunchWordWave(data.id, 1, 1);
     }
 }

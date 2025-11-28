@@ -26,8 +26,11 @@ public class GridMap : MonoBehaviour
     [SerializeField] Sprite waveSprite;
     [SerializeField] Sprite burnSprite;
     [SerializeField] Sprite freezeSprite;
+    [SerializeField] Sprite blockSprite;
+
 
     private List<List<GridInfo>> gridInfos;
+
     [SerializeField] Health health;
     List<wordWave> wordWaves;
 
@@ -37,10 +40,13 @@ public class GridMap : MonoBehaviour
 
     void Awake()
     {
+        //普通文字网格
         gridInfos = new List<List<GridInfo>>()
         {
             row0, row1, row2, row3, row4
         };
+
+
         wordWaves = new List<wordWave>();
         StartCoroutine(FixedLoop());    
     }
@@ -109,6 +115,22 @@ public class GridMap : MonoBehaviour
             }
             StartCoroutine(FreezeTimer());
         }
+        else if(word == "BLOCK")
+        {
+            int Row = 0;
+            foreach (char character in wordWave.word)
+            {
+                // gridInfos[Row][0].wordWave = wordWave;
+                // gridInfos[Row][0].character = character;
+                // gridInfos[Row][0].Cha.text = character.ToString();
+                // gridInfos[Row][0].TileSprite.sprite = blockSprite;
+                gridInfos[Row][0].isBlockTile = true;
+                gridInfos[Row][0].BlockLeftHealth = 3;
+                gridInfos[Row][0].blockCharacter = character;
+                gridInfos[Row][0].BlockCha.text = character.ToString();
+                Row++;
+            }
+        }
         else if(word == "ARROW")
         {
             int column = 0;
@@ -168,7 +190,7 @@ public class GridMap : MonoBehaviour
     }
 
 
-    public void LaunchEnemyWave(string word, float moveInterval, float damage, int currentRow)
+    public void LaunchEnemyWave(string word, float moveInterval, float damage,int currentRow)
     {
         wordWave wordWave = new wordWave();
         wordWave.word = word;
@@ -193,28 +215,42 @@ public class GridMap : MonoBehaviour
             int rows = gridInfos.Count;
             int cols = gridInfos[0].Count;
 
+            //正向遍历所有格子
             for (int i = rows-1; i >= 0; i--)
             {
                 for (int j = cols-1; j >= 0; j--)
                 {
-                    if(gridInfos[i][j].wordWave == null)
+                    //展示阻挡方块
+                    if(gridInfos[i][j].isBlockTile == true)
+                    { 
+                        gridInfos[i][j].BlockSprite.SetActive(true);
+                    }
+                    else
                     {
+                        gridInfos[i][j].BlockSprite.SetActive(false);
+                    }
+                    //跳过空格子
+                    if(gridInfos[i][j].wordWave == null)
+                    { 
                         continue;
                     }
                     gridInfos[i][j].waitTime -= fixedTime;
+                    //如果此格子是自己格
                     if(gridInfos[i][j].waitTime <= 0 && gridInfos[i][j].wordWave.isEnemy == false)
                     {
+                        //如果没在边缘
                         if(j<cols-1)
                         {
+                            //如果前方一格不是敌人，文字信息向前传递
                             if(gridInfos[i][j+1].wordWave == null || gridInfos[i][j+1].wordWave.isEnemy == false)
                             {
-                                //文字向前移动
                                 gridInfos[i][j+1].wordWave = gridInfos[i][j].wordWave;
                                 gridInfos[i][j+1].character = gridInfos[i][j].character;
                                 gridInfos[i][j+1].Cha.text = gridInfos[i][j].character.ToString();
                                 gridInfos[i][j+1].waitTime = gridInfos[i][j].wordWave.moveInterval;
                                 gridInfos[i][j+1].TileSprite.sprite = gridInfos[i][j].TileSprite.sprite;
                             }
+                            //如果是敌人销毁前方一格
                             else
                             {
                                 gridInfos[i][j+1].wordWave = null;
@@ -224,12 +260,14 @@ public class GridMap : MonoBehaviour
                                 gridInfos[i][j+1].TileSprite.sprite = emptySprite;
                             }
                         }
+                        //在边缘的时候扣血
                         else
                         {          
                             //触发伤害            
                             health.loseEnemyHealth(1);
                             point.AddPoint(1);
                         }
+                        //自我销毁
                         gridInfos[i][j].wordWave = null;
                         gridInfos[i][j].character = '\0';
                         gridInfos[i][j].Cha.text = "";
@@ -238,31 +276,51 @@ public class GridMap : MonoBehaviour
                     }
                 }
             }
+            //反向遍历所有格子
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
+                    //跳过空格子
                     if(gridInfos[i][j].wordWave == null)
                     {
                         continue;
                     }
                     gridInfos[i][j].waitTime -= fixedTime;
+                    //如果此格子是敌人格
                     if(gridInfos[i][j].waitTime <= 0 && gridInfos[i][j].wordWave.isEnemy == true)
-                    {                                                                                                                     
+                    {                           
+                        //如果不在边缘就向左移动                                                                                          
                         if(j>0)
                         {
-                        
-                            gridInfos[i][j-1].wordWave = gridInfos[i][j].wordWave;
-                            gridInfos[i][j-1].character = gridInfos[i][j].character;
-                            gridInfos[i][j-1].Cha.text = gridInfos[i][j].character.ToString();
-                            gridInfos[i][j-1].waitTime = gridInfos[i][j].wordWave.moveInterval;
-                            gridInfos[i][j-1].TileSprite.sprite = gridInfos[i][j].TileSprite.sprite;
-                            
+                            //如果左边是阻挡格
+                            if(gridInfos[i][j-1].isBlockTile==true)
+                            {
+                                if(gridInfos[i][j-1].BlockLeftHealth>1)
+                                {
+                                    gridInfos[i][j-1].BlockLeftHealth--;
+                                }
+                                else
+                                {
+                                    gridInfos[i][j-1].isBlockTile = false;
+                                    gridInfos[i][j-1].BlockLeftHealth = 0;
+                                }
+                            }
+                            else
+                            {
+                                gridInfos[i][j-1].wordWave = gridInfos[i][j].wordWave;
+                                gridInfos[i][j-1].character = gridInfos[i][j].character;
+                                gridInfos[i][j-1].Cha.text = gridInfos[i][j].character.ToString();
+                                gridInfos[i][j-1].waitTime = gridInfos[i][j].wordWave.moveInterval;
+                                gridInfos[i][j-1].TileSprite.sprite = gridInfos[i][j].TileSprite.sprite;
+                            }
                         }
+                        //如果在边缘就扣除玩家血量
                         else
                         {
                             health.losePlayerHealth(1);
                         }
+                        //自我销毁
                         gridInfos[i][j].wordWave = null;
                         gridInfos[i][j].character = '\0';
                         gridInfos[i][j].Cha.text = "";

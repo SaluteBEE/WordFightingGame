@@ -15,6 +15,10 @@
       {
         "id": "ARROW",
         "cost": 5
+      },
+      {
+        "id": "BLOCK",
+        "cost": 0
       }
     ]
   }

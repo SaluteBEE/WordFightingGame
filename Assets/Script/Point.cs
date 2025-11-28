@@ -14,7 +14,6 @@ public class Point : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
