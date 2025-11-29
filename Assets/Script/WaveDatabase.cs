@@ -20,7 +20,7 @@ public class WaveDatabase : MonoBehaviour
 {
     public static WaveDatabase Instance;
     public WaveDataList dataList;
-    [SerializeField] Text text;
+    [SerializeField] TextMeshPro text;
 
     void Awake()
     {

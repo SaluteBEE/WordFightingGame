@@ -8,7 +8,7 @@ public class WaveGernerator : MonoBehaviour
     [SerializeField] GridMap gridMap;
     [SerializeField] Point point;
 
-    public void GenerateWave(string waveID, bool isEnemy)
+    public void GenerateWave(string waveID, bool isEnemy,int row = -1)
     {
         
         WaveData data = WaveDatabase.Instance.GetWave(waveID);
@@ -28,8 +28,15 @@ public class WaveGernerator : MonoBehaviour
         }
         else
         {
-            int randomRow = Random.Range(1, 5);
-            gridMap.LaunchEnemyWave(data.id, 1, 1,randomRow);
+            if(row == -1)
+            {
+                int randomRow = Random.Range(0, 5);
+            }
+            else
+            {
+                int randomRow = row;
+            }
+            gridMap.LaunchEnemyWave(data.id, 1, 1,row);
         }
         
     }

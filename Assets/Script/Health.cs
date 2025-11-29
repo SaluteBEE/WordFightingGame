@@ -7,18 +7,19 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     [SerializeField] int PlayerHealth = 100;
+    [SerializeField] int MaxPlayerHealth = 100;
     [SerializeField] int EnemyHealth = 100;
-    [SerializeField] Text PlayerHealthText;
-    [SerializeField] Text EnemyHealthText;
+    [SerializeField] int MaxEnemyHealth = 100;
+    [SerializeField] UITopBar uITopBar;
     Collider2D boxCollider;
 
     [SerializeField] int currentRow = 2;
     // Start is called before the first frame update
     void Start()
     {
-        PlayerHealthText.text = PlayerHealth.ToString();
-        EnemyHealthText.text = EnemyHealth.ToString();
         boxCollider = GetComponent<BoxCollider2D>();
+        uITopBar.SetHealth(PlayerHealth,MaxPlayerHealth);
+        uITopBar.SetEnemyHealth(EnemyHealth,MaxEnemyHealth);
     }
 
     // Update is called once per frame
@@ -29,13 +30,15 @@ public class Health : MonoBehaviour
     public void losePlayerHealth(int amount)
     {
         PlayerHealth -= amount;
-        PlayerHealthText.text = PlayerHealth.ToString();
+        // PlayerHealthText.text = PlayerHealth.ToString();
+        uITopBar.SetHealth(PlayerHealth,MaxPlayerHealth);
     }
     public void loseEnemyHealth(int amount)
     {
         EnemyHealth -= amount;
-        EnemyHealthText.text = EnemyHealth.ToString();
+        //EnemyHealthText.text = EnemyHealth.ToString();
+        uITopBar.SetEnemyHealth(EnemyHealth,MaxEnemyHealth);
     }
     
-    
+     
 }

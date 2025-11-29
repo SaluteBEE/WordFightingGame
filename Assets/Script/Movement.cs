@@ -8,34 +8,75 @@ public class Movement : MonoBehaviour
     [SerializeField] float upDownDistance;
     [SerializeField] float leftRightDistance;
     [SerializeField] int maxRow = 5;
-    [SerializeField] int minRow = 1; 
-    [SerializeField] public int currentRow = 3;  
+    [SerializeField] int minRow = 1;
+    [SerializeField] public int currentRow = 2;
+    [SerializeField] public GridMap gridMap;
 
-    public void MoveLeft()
-    {
-        transform.DOMoveX(transform.position.x - leftRightDistance, 0.3f);
+    private Tween moveTween; 
 
-    }
-    public void MoveRight()
+    void Start()
     {
-        transform.DOMoveX(transform.position.x + leftRightDistance, 0.3f);
+        gridMap.HighLightCurrentLine();
     }
-    public void MoveUp()
+
+    private void FinishCurrentTween()
     {
-        if(currentRow > minRow)
+        if (moveTween != null && moveTween.IsActive())
         {
-            currentRow--;
-            transform.DOMoveZ(transform.position.z + upDownDistance, 0.3f);
+            moveTween.Complete();   
+            moveTween = null;
         }
     }
+
+    // public void MoveLeft()
+    // {
+    //     FinishCurrentTween();
+    //     moveTween = transform.DOMoveX(
+    //         transform.position.x - leftRightDistance,
+    //         0.3f
+    //     );
+    // }
+
+    // public void MoveRight()
+    // {
+    //     FinishCurrentTween();
+
+    //     moveTween = transform.DOMoveX(
+    //         transform.position.x + leftRightDistance,
+    //         0.3f
+    //     );
+    // }
+
+    public void MoveUp()
+    {
+        if (currentRow > minRow)
+        {
+            currentRow--;
+
+            FinishCurrentTween();
+
+            moveTween = transform.DOMoveZ(
+                transform.position.z + upDownDistance,
+                0.2f
+            );
+
+            gridMap.HighLightCurrentLine();
+        }
+    }
+
     public void MoveDown()
     {
-        if(currentRow < maxRow)
+        if (currentRow < maxRow)
         {
             currentRow++;
-            transform.DOMoveZ(transform.position.z - upDownDistance, 0.3f);
+
+            FinishCurrentTween();
+
+            moveTween = transform.DOMoveZ(
+                transform.position.z - upDownDistance,
+                0.2f
+            );
+            gridMap.HighLightCurrentLine();
         }
     }
 }
-    
-

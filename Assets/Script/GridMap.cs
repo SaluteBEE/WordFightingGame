@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 [System.Serializable]
@@ -48,32 +49,31 @@ public class GridMap : MonoBehaviour
 
 
         wordWaves = new List<wordWave>();
+        
+        int rows = gridInfos.Count;
+        int cols = gridInfos[0].Count;
+        for (int i = rows-1; i >= 0; i--)
+        {
+            for (int j = cols-1; j >= 0; j--)
+            {
+                gridInfos[i][j].wordWave = null;
+                gridInfos[i][j].character = '\0';
+                gridInfos[i][j].Cha.text = "";
+                gridInfos[i][j].waitTime = 0;
+                gridInfos[i][j].TileSprite.sprite = emptySprite;
+            }
+        }
         StartCoroutine(FixedLoop());    
     }
     void Start()
     {
         
+        
     }
 
     void Update()
     {
-        // int rows = gridInfos.Count;
-        // int cols = gridInfos[0].Count;
 
-        // for (int i = rows-1; i >= 0; i--)
-        // {
-        //     for (int j = cols-1; j >= 0; j--)
-        //     {
-        //         if(gridInfos[i][j].wordWave == null)
-        //         {
-        //             gridInfos[i][j].TileSprite.sprite = emptySprite;
-        //         }
-        //         else
-        //         {
-        //             gridInfos[i][j].TileSprite.sprite = waveSprite;
-        //         }
-        //     }
-        // }
     }
     IEnumerator FreezeTimer()
     {
@@ -84,7 +84,7 @@ public class GridMap : MonoBehaviour
 
     public void LaunchWordWave(string word, float moveInterval, float damage)
     {
-        int currentRow = movement.currentRow-1;
+        int currentRow = movement.currentRow;
         wordWave wordWave = new wordWave();
         wordWave.word = word;
         wordWave.moveInterval = moveInterval;
@@ -208,6 +208,28 @@ public class GridMap : MonoBehaviour
         }
         wordWaves.Add(wordWave);
     }
+
+    public void HighLightCurrentLine()
+    {
+        Debug.Log("currentRow:"+movement.currentRow);
+        int rows = gridInfos.Count;
+        int cols = gridInfos[0].Count;
+
+        for (int i = rows-1; i >= 0; i--)
+        {
+            for (int j = cols-1; j >= 0; j--)
+            {
+                if(i==movement.currentRow)
+                {
+                    gridInfos[movement.currentRow][j].TileSprite.color = new Color(0.8f, 0.8f, 0.8f);
+                }
+                else
+                {
+                    gridInfos[i][j].TileSprite.color = new Color(1f, 1f, 1f);
+                }
+            }
+        }
+    }
     IEnumerator FixedLoop()
     {
         while (true)
@@ -262,7 +284,8 @@ public class GridMap : MonoBehaviour
                         }
                         //在边缘的时候扣血
                         else
-                        {          
+                        {        
+                            Debug.Log("扣血字母"+gridInfos[i][j].character+" "+i+j);  
                             //触发伤害            
                             health.loseEnemyHealth(1);
                             point.AddPoint(1);

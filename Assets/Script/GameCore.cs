@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameCore : MonoBehaviour
 {
     [SerializeField] string word;
-    [SerializeField] Text Inputtext;
+    [SerializeField] TextMeshPro Inputtext;
     [SerializeField] Health health;
 
     
@@ -14,14 +15,11 @@ public class GameCore : MonoBehaviour
     int CurrentWordLength = 0;
     [SerializeField] WaveGernerator waveGenerator;
     [SerializeField] Movement movement;
-    // Start is called before the first frame update
     void Start()
     {
         Inputtext.text = "";
         wordLength = word.Length;
     }
-
-    // Update is called once per frame
     void Update()
     {
 
@@ -33,18 +31,14 @@ public class GameCore : MonoBehaviour
         {
             movement.MoveDown();
         }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            movement.MoveLeft();
-        }
-        else if(Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            movement.MoveRight();
-        }
-
-
-
-
+        // else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        // {
+        //     movement.MoveLeft();
+        // }
+        // else if(Input.GetKeyDown(KeyCode.RightArrow))
+        // {
+        //     movement.MoveRight();
+        // }
         string input = Input.inputString;
         if(input != " ")
             {

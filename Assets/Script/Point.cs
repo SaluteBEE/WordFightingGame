@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 public class Point : MonoBehaviour
 {
-    [SerializeField] Text PointText;
+    [SerializeField] UITopBar uITopBar;
     int pointValue = 0;
 
     void Start()
     {
-        
+        RefreshPointText();
     }
 
     void Update()
@@ -48,6 +48,6 @@ public class Point : MonoBehaviour
     }
     public void RefreshPointText()
     {
-        PointText.text = pointValue.ToString();
+        uITopBar.SetEnergy(pointValue,50);
     }
 }
