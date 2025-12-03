@@ -28,8 +28,6 @@ public class TypingManager: MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-    // 由 PlayerInput 调用，把自己传进来
     public void RegisterPlayer(PlayerInput player)
     {
         localPlayer = player;
@@ -41,54 +39,17 @@ public class TypingManager: MonoBehaviour
     }
     void Update()
     {
-
-        // if(Input.GetKeyDown(KeyCode.UpArrow))
-        // {
-        //     movement.MoveUp();
-        // }
-        // else if(Input.GetKeyDown(KeyCode.DownArrow))
-        // {
-        //     movement.MoveDown();
-        // }
-        // else if(Input.GetKeyDown(KeyCode.LeftArrow))
-        // {
-        //     movement.MoveLeft();
-        // }
-        // else if(Input.GetKeyDown(KeyCode.RightArrow))
-        // {
-        //     movement.MoveRight();
-        // }
         string input = Input.inputString;
         if(input != " ")
-            {
-                Inputtext.text = Inputtext.text += input;
-            }
-            else 
-            {
-                // if(Inputtext.text == "UP")
-                // {
-                //     movement.MoveUp();
-                // }
-                // else if(Inputtext.text == "DOWN")
-                // {
-                //     movement.MoveDown();
-                // }
-                // else if(Inputtext.text == "LEFT")
-                // {
-                //     movement.MoveLeft();
-                // }
-                // else if(Inputtext.text == "RIGHT")
-                // {
-                //     movement.MoveRight();
-                // }
-                // else 
-                // {
-                    localPlayer.CmdReportWordWave(Inputtext.text);
-                    //waveGenerator.GenerateWave(Inputtext.text,false);
-                //}
-                CurrentWordLength = 0;
-                Inputtext.text = "";
-            }
+        {
+            Inputtext.text = Inputtext.text += input;
+        }
+        else 
+        {
+            localPlayer.CmdReportWordWave(Inputtext.text);
+            CurrentWordLength = 0;
+            Inputtext.text = "";
         }
     }
+}
 

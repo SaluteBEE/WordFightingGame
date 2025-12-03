@@ -1,7 +1,11 @@
 {
     "waves": [
       {
-        "id": "BOOM",
+        "id": "DOPE",
+        "cost": 0
+      },
+      {
+        "id": "SILLYBRAIN",
         "cost": 0
       },
       {

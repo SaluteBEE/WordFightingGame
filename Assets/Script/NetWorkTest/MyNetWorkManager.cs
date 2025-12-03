@@ -3,10 +3,26 @@ using UnityEngine;
 
 public class MyNetworkManager : NetworkManager
 {
-    // 客户端成功连接到服务器时会自动调用
     public override void OnClientConnect()
     {
         base.OnClientConnect();
-        Debug.Log("客户端成功连接到服务器！！！");
+        
+        UIManager.Instance.SetStatus("Connected to server.");
+
+        if (UIManager.Instance.StartPanel != null)
+        {
+            UIManager.Instance.StartPanel.SetActive(false);
+        }
+    }
+
+    public override void OnClientDisconnect()
+    {
+        base.OnClientDisconnect();
+        UIManager.Instance.SetStatus("Disconnected from server.");
+
+        if (UIManager.Instance.StartPanel != null)
+        {
+            UIManager.Instance.StartPanel.SetActive(true);
+        }
     }
 }
