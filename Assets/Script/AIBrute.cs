@@ -34,6 +34,6 @@ public class AIBrute : AI
     }
     public void attackAniEvent()
     {       
-        waveGernerator.GenerateWave("Raaa",true,newRow);
+        //waveGernerator.GenerateWave("Raaa",true,newRow);
     }
 }

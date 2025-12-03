@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Point : MonoBehaviour
 {
     [SerializeField] UITopBar uITopBar;
-    int pointValue = 0;
+    int pointValue = 100;
 
     void Start()
     {
