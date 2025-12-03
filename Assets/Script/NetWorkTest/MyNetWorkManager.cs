@@ -1,3 +1,4 @@
+using kcp2k;
 using Mirror;
 using UnityEngine;
 
@@ -24,5 +25,10 @@ public class MyNetworkManager : NetworkManager
         {
             UIManager.Instance.StartPanel.SetActive(true);
         }
+    }
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        Debug.Log($"[KCP] Server started on port {GetComponent<KcpTransport>().Port}");
     }
 }
